@@ -66,11 +66,10 @@ The API to store arbitrary data is almost identical as storing credit card data.
       ssn: '123456789'
     )
     data.href # => '/secure_data/3a5ca937-7a08-434b-8648-4c34986bfb54'
-    data.data.ssn # => '*********'
+    data.ssn # => '*********'
 
 You'll notice that for arbitrary data, Alcatraz does not do any special processing like it does with credit cards because
 we do not know what you are sending in.  For masked data, the values sent in are fully masked instead of partially masked.
-We also do not unpack the data from its containing "data" hash.
 
 ### Fetch secure data
 
@@ -78,9 +77,9 @@ Fetching secure data is the same as fetching card data.  Again, depending on you
 
     data = conn.get_data('3a5ca937-7a08-434b-8648-4c34986bfb54')
     # With decryption enabled...
-    data.data.ssn # => '123456789'
+    data.ssn # => '123456789'
     # otherwise...
-    data.data.ssn # => '*********'
+    data.ssn # => '*********'
 
 ### Create additional API clients
 
