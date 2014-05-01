@@ -83,8 +83,22 @@ Fetching secure data is the same as fetching card data.  Again, depending on you
 
 ### Create additional API clients
 
+Allows for creation of additional API clients for use with Alcatraz.  Your authenticated client must have appropriate authority
+to use this endpoint.  The newly created client will only return its public key.
+
+    client = conn.create_client!(name: 'Some Name')
+    client.inspect # => { id: '3a5ca937-7a08-434b-8648-4c34986bfb54', name: 'Some Name', href: 'api_clients/3a5ca937-7a08-434b-8648-4c34986bfb54', public_key: '3a5ca937-7a08-434b-8648-4c34986bfb54'}
+
 ### Authorize/Deauthorize data to clients
 
+Allows you to control which of your clients have access to data using their API keys.  Used to "claim" data that has been stored in Alcatraz previously.
+If you store data using the API calls above you will automatically be authorized to it.  This method is only to authorize other API clients to access the
+data with their public/secret key pairs.
+
+    data = conn.get_data('3a5ca937-7a08-434b-8648-4c34986bfb54')
+    authorize_data_for_client!(data, 'some-other-client-public-key')
+    # Later, to revoke a client's authority to some data...
+    deauthorize_data_for_client!(data, 'some-other-client-public-key')
 
 ## Contributing
 
