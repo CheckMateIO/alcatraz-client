@@ -34,18 +34,23 @@ module Alcatraz
       end
 
       def create_client!(name)
-        parse_response_to_secure_object(post('/api_clients', name: name))
+        response = post('/api_clients', api_client: {name: name})
+        if response.success?
+          response.body.api_client
+        else
+          nil
+        end
       end
 
       def authorize_data_for_client!(data_or_id, client_or_public_key)
         data_id = unwrap_to_id data_or_id
-        public_key = unwrap_to_id client_or_public_key
-        post("/secure_data/#{data_id}/authorizations", public_key: public_key)
+        public_key = unwrap_to_key client_or_public_key
+        post("/secure_data/#{data_id}/authorizations", public_key: public_key).success?
       end
 
       def deauthorize_data_for_client!(data_or_id, client_or_public_key)
         data_id = unwrap_to_id data_or_id
-        public_key = unwrap_to_id client_or_public_key
+        public_key = unwrap_to_key client_or_public_key
         delete("/secure_data/#{data_id}/authorizations/#{public_key}")
       end
 
@@ -54,6 +59,11 @@ module Alcatraz
       def unwrap_to_id(object_or_id)
         object_or_id = object_or_id.id unless object_or_id.kind_of?(String)
         object_or_id
+      end
+
+      def unwrap_to_key(object_or_key)
+        object_or_key = object_or_key.public_key unless object_or_key.kind_of?(String)
+        object_or_key
       end
 
       def connection
