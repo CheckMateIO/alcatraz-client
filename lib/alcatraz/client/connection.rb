@@ -67,9 +67,9 @@ module Alcatraz
       end
 
       def connection
-        Faraday.new(url: api_url, headers: {'ACCESS_KEY' => public_key}) do |conn|
+        Faraday.new(url: api_url) do |conn|
           conn.request :json
-          conn.use Faraday::Request::Hmac, secret_key, nonce: (Time.now.to_f * 1e6).to_i.to_s
+          conn.use Faraday::Request::Hmac, secret_key, nonce: (Time.now.to_f * 1e6).to_i.to_s, query_based: true, extra_auth_params: {public_key: public_key}
           conn.use Faraday::Response::Mashify
           conn.response :json, content_type: /\bjson$/
           conn.response :raise_error
