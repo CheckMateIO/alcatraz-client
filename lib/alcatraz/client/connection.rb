@@ -19,7 +19,7 @@ module Alcatraz
 
       def store_card!(params)
         card = parse_response_to_secure_object(post('/cards', params))
-        authorize_data_for_client!(card, public_key)
+        authorize_data_for_client!(card, public_key) if card && card.id
         card
       end
 
@@ -29,7 +29,7 @@ module Alcatraz
 
       def store_data!(params)
         data = parse_response_to_secure_object(post('/secure_data', params))
-        authorize_data_for_client!(data, public_key)
+        authorize_data_for_client!(data, public_key) if data && data.id
         data
       end
 
@@ -72,7 +72,6 @@ module Alcatraz
           conn.use Faraday::Request::Hmac, secret_key, nonce: (Time.now.to_f * 1e6).to_i.to_s, query_based: true, extra_auth_params: {public_key: public_key}
           conn.use Faraday::Response::Mashify
           conn.response :json, content_type: /\bjson$/
-          conn.response :raise_error
           conn.adapter Faraday.default_adapter
         end
       end
@@ -91,14 +90,12 @@ module Alcatraz
       end
 
       def parse_response_to_secure_object(response)
-        if response.success?
-          if response.body.respond_to? :card
-            response.body.card
-          else
-            response.body.secure_datum
-          end
+        if response.body.respond_to? :card
+          response.body.card
+        elsif response.body.respond_to? :secure_datum
+          response.body.secure_datum
         else
-          nil
+          response.body
         end
       end
     end
