@@ -31,6 +31,7 @@ After that you can use any of the public API methods for Alcatraz.
 The first thing you'll want to do with Alcatraz is store credit card data securely. That's the whole game after all!
 
     card = conn.store_card!(
+      name: 'Jane Doe',
       number: '4111111111111111',
       expiration_month: '5',
       expiration_year: '2015',
