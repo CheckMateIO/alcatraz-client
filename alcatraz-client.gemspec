@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock', '~> 1.15'
   spec.add_development_dependency 'vcr', '~> 2.8.0'
 
-  spec.add_runtime_dependency 'hashie', '~> 2.1.1'
+  spec.add_runtime_dependency 'hashie'
   spec.add_runtime_dependency 'faraday', '~> 0.9.0'
   spec.add_runtime_dependency 'faraday_middleware'
   spec.add_runtime_dependency 'warden-hmac-authentication', '~> 0.6.4'
