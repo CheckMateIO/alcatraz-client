@@ -33,8 +33,8 @@ module Alcatraz
         data
       end
 
-      def create_client!(name)
-        response = post('/api_clients', api_client: {name: name})
+      def create_client!(name, enable_two_factor_auth = false)
+        response = post('/api_clients', api_client: {name: name, enable_two_factor_auth: enable_two_factor_auth})
         if response.success?
           response.body.api_client
         else
