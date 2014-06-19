@@ -90,12 +90,16 @@ module Alcatraz
       end
 
       def parse_response_to_secure_object(response)
-        if response.body.respond_to? :card
-          response.body.card
-        elsif response.body.respond_to? :secure_datum
-          response.body.secure_datum
+        if response.success?
+          if response.body.respond_to? :card
+            response.body.card
+          elsif response.body.respond_to? :secure_datum
+            response.body.secure_datum
+          else
+            response.body
+          end
         else
-          response.body
+          nil
         end
       end
     end
