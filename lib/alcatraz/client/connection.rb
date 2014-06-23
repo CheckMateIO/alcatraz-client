@@ -42,6 +42,28 @@ module Alcatraz
         end
       end
 
+      def destroy_client!(id)
+        delete("/api_clients/#{id}")
+      end
+
+      def enable_two_factor_auth!(id)
+        response = put("/api_clients/#{id}/enable_two_factor_auth")
+        if response.success?
+          response.body.api_client
+        else
+          nil
+        end
+      end
+
+      def disable_two_factor_auth!(id)
+        response = put("/api_clients/#{id}/disable_two_factor_auth")
+        if response.success?
+          response.body.api_client
+        else
+          nil
+        end
+      end
+
       def authorize_data_for_client!(data_or_id, client_or_public_key)
         data_id = unwrap_to_id data_or_id
         public_key = unwrap_to_key client_or_public_key
@@ -82,6 +104,10 @@ module Alcatraz
 
       def post(path, options = {})
         connection.post(path, options)
+      end
+
+      def put(path, options = {})
+        connection.put(path, options)
       end
 
       def delete(path)
