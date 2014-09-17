@@ -24,7 +24,9 @@ First, set up your connection.
 
     conn = Alcatraz::Client::Connection.new(public_key: ENV['ALCATRAZ_PUBLIC_KEY'], secret_key: ENV['ALCATRAZ_SECRET_KEY'])
 
-After that you can use any of the public API methods for Alcatraz.
+After that you can use any of the public API methods for Alcatraz.  Note that you
+can also specify an alternative API url if you need to using the :api_url config
+key.
 
 ### Store credit card data
 
