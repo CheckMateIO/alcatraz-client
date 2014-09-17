@@ -18,9 +18,7 @@ module Alcatraz
       end
 
       def store_card!(params)
-        card = parse_response_to_secure_object(post('/cards', params))
-        authorize_data_for_client!(card, public_key) if card && card.id
-        card
+        parse_response_to_secure_object(post('/cards', params))
       end
 
       def get_data(id)
@@ -28,9 +26,7 @@ module Alcatraz
       end
 
       def store_data!(params)
-        data = parse_response_to_secure_object(post('/secure_data', params))
-        authorize_data_for_client!(data, public_key) if data && data.id
-        data
+        parse_response_to_secure_object(post('/secure_data', params))
       end
 
       def create_client!(name, enable_two_factor_auth = false)
